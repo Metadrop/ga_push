@@ -51,13 +51,6 @@ class Event extends RulesActionBase {
    *
    */
   protected function doExecute($category, $action, $label, $value, $nonInteraction) {
-    dpm(array(
-      'eventCategory'        => $category,
-      'eventAction'          => $action,
-      'eventLabel'           => $label,
-      'eventValue'           => $value,
-      'nonInteraction'       => $nonInteraction,
-    ));
    ga_push_add_event(array(
       'eventCategory'        => $category,
       'eventAction'          => $action,
