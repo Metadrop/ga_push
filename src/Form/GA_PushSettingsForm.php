@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\ga_push\Form\GA_PushSettingsForm.
- */
-
 namespace Drupal\ga_push\Form;
 
 use Drupal\Core\Form\ConfigFormBase;

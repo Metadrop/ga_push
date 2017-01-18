@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\ga_push\Plugin\RulesAction\Social.
- */
-
 namespace Drupal\ga_push\Plugin\RulesAction;
 
 use Drupal\rules\Core\RulesActionBase;
