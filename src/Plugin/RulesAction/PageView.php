@@ -36,10 +36,13 @@ class PageView extends RulesActionBase {
    * Executes the action with the given context.
    *
    */
-  protected function doExecute($location, $page, $title) {
-    ga_push_add_pageview(array(
-     'location' => $location,
-      'page'     => $page,
-      'title'    => $title));
+  protected function doExecute() {
+    ga_push_add_pageview(
+      array(
+        'location' => $this->getContextValue('location'),
+        'page'     => $this->getContextValue('page'),
+        'title'    => $this->getContextValue('title')
+      )
+    );
   }
 }

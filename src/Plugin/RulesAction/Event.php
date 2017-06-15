@@ -45,13 +45,14 @@ class Event extends RulesActionBase {
    * Executes the action with the given context.
    *
    */
-  protected function doExecute($category, $action, $label, $value, $nonInteraction) {
-   ga_push_add_event(array(
-      'eventCategory'        => $category,
-      'eventAction'          => $action,
-      'eventLabel'           => $label,
-      'eventValue'           => $value,
-      'nonInteraction'       => $nonInteraction,
-    ));
+  protected function doExecute() {
+    $event = array(
+      'eventCategory'        => $this->getContextValue('category'),
+      'eventAction'          => $this->getContextValue('action'),
+      'eventLabel'           => $this->getContextValue('label'),
+      'eventValue'           => $this->getContextValue('value'),
+      'nonInteraction'       => $this->getContextValue('non-interaction'),
+    );
+    ga_push_add_event($event);
   }
 }

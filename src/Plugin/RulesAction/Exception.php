@@ -30,11 +30,12 @@ class Exception extends RulesActionBase {
    * Executes the action with the given context.
    *
    */
-  protected function doExecute($description, $isFatal) {
-    ga_push_add_exception(array(
-      'exDescription' => $description,
-      'exFatal' => $isFatal
-        )
+  protected function doExecute() {
+    ga_push_add_exception(
+      array(
+        'exDescription' => $this->getContextValue('exDescription'),
+        'exFatal' => $this->getContextValue('exFatal'),
+      )
     );
   }
 }

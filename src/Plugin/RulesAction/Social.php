@@ -36,11 +36,11 @@ class Social extends RulesActionBase {
    * Executes the action with the given context.
    *
    */
-  protected function doExecute($network, $action, $target) {
+  protected function doExecute() {
     ga_push_add_social(array(
-      'socialNetwork' => $network,
-      'socialAction' => $action,
-      'socialTarget' => $target,
+      'socialNetwork' => $this->getContextValue('socialNetwork'),
+      'socialAction' => $this->getContextValue('socialAction'),
+      'socialTarget' => $this->getContextValue('socialTarget'),
     ));
   }
 }
