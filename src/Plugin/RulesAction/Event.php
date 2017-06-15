@@ -12,6 +12,16 @@ use Drupal\rules\Core\RulesActionBase;
  *   label = @Translation("Ga push: event"),
  *   category = @Translation("GA Push"),
  *   context = {
+ *     "method" = @ContextDefinition("string",
+ *       label = @Translation("Method"),
+ *       description = @Translation("Select the method. If none is selected default method will be used."),
+ *       required = FALSE,
+ *     ),
+ *     "event" = @ContextDefinition("string",
+ *       label = @Translation("Event"),
+ *       description = @Translation("The event name for Data Layer."),
+ *       required = FALSE,
+ *     ),
  *     "category" = @ContextDefinition("string",
  *       label = @Translation("Category"),
  *       description = @Translation("The name you supply for the group of objects you want to track.")
@@ -39,20 +49,39 @@ use Drupal\rules\Core\RulesActionBase;
  *   },
  * )
  */
-class Event extends RulesActionBase {
+class Event extends Base {
 
   /**
    * Executes the action with the given context.
-   *
    */
   protected function doExecute() {
-    $event = array(
+    $event = [
       'eventCategory'        => $this->getContextValue('category'),
       'eventAction'          => $this->getContextValue('action'),
       'eventLabel'           => $this->getContextValue('label'),
       'eventValue'           => $this->getContextValue('value'),
       'nonInteraction'       => $this->getContextValue('non-interaction'),
-    );
-    ga_push_add_event($event);
+    ];
+
+    // Retrieve selected method or the default one.
+    $method = $this->getMethod();
+
+    if ($this->isDatalayerMethod()) {
+      $event['event'] = $this->getContextValue('event');
+    }
+
+    ga_push_add_event($event, $method);
   }
+
+  /**
+   * Check if selected method is datalayer.
+   *
+   * @return bool
+   *   Is datalayer method?
+   */
+  public function isDatalayerMethod() {
+    $method = $this->getContextValue('method');
+    return $method == GA_PUSH_METHOD_DATALAYER_JS || $this->getDefaultMethod() == GA_PUSH_METHOD_DATALAYER_JS;
+  }
+
 }

@@ -12,6 +12,11 @@ use Drupal\rules\Core\RulesActionBase;
  *   label = @Translation("Ga push: page view"),
  *   category = @Translation("GA Push"),
  *   context = {
+ *     "method" = @ContextDefinition("string",
+ *       label = @Translation("Method"),
+ *       description = @Translation("Select the method. If none is selected default method will be used."),
+ *       required = FALSE,
+ *     ),
  *     "location" = @ContextDefinition("string",
  *       label = @Translation("Location"),
  *       description = @Translation("URL of the page being tracked. By default, analytics.js sets this to the full document URL, excluding the fragment identifier."),
@@ -30,7 +35,7 @@ use Drupal\rules\Core\RulesActionBase;
  *   },
  * )
  */
-class PageView extends RulesActionBase {
+class PageView extends Base {
 
   /**
    * Executes the action with the given context.
@@ -42,7 +47,9 @@ class PageView extends RulesActionBase {
         'location' => $this->getContextValue('location'),
         'page'     => $this->getContextValue('page'),
         'title'    => $this->getContextValue('title')
-      )
+      ),
+      $this->getMethod()
     );
   }
+
 }

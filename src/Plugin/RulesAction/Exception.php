@@ -12,6 +12,11 @@ use Drupal\rules\Core\RulesActionBase;
  *   label = @Translation("Ga push: exception"),
  *   category = @Translation("GA Push"),
  *   context = {
+ *     "method" = @ContextDefinition("string",
+ *       label = @Translation("Method"),
+ *       description = @Translation("Select the method. If none is selected default method will be used."),
+ *       required = FALSE,
+ *     ),
  *     "exDescription" = @ContextDefinition("string",
  *       label = @Translation("Description"),
  *       description = @Translation("A description of the exception."),
@@ -24,7 +29,7 @@ use Drupal\rules\Core\RulesActionBase;
  *   },
  * )
  */
-class Exception extends RulesActionBase {
+class Exception extends Base {
 
   /**
    * Executes the action with the given context.
@@ -35,7 +40,9 @@ class Exception extends RulesActionBase {
       array(
         'exDescription' => $this->getContextValue('exDescription'),
         'exFatal' => $this->getContextValue('exFatal'),
-      )
+      ),
+      $this->getMethod()
     );
   }
+
 }

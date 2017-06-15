@@ -6,6 +6,7 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Form\FormStateInterface;
 
 // Methods:
 // Classic GA.
@@ -13,6 +14,7 @@ define('GA_PUSH_METHOD_DEFAULT', 'default');
 define('GA_PUSH_METHOD_GA_JS', 'ga-js');
 define('GA_PUSH_METHOD_SSGA', 'ssga');
 define('GA_PUSH_METHOD_PHP_GA', 'php-ga');
+define('GA_PUSH_METHOD_DATALAYER_JS', 'datalayer-js');
 // Universal Tracking, Measurement Protocol.
 define('GA_PUSH_METHOD_UTMP_PHP', 'utmp-php');
 define('GA_PUSH_METHOD_ANALYTICS_JS', 'analytics-js');
@@ -74,6 +76,10 @@ function ga_push_page_attachments(array &$attachments) {
   module_load_include('inc', 'ga_push', 'inc/ga_push.analytics_js');
   $analytics_js_push = ga_push_method_analytics_js_push();
   $script .= $analytics_js_push;
+
+  module_load_include('inc', 'ga_push', 'inc/ga_push.datalayer');
+  $datalayer_push = ga_push_method_datalayer_push();
+  $script .= $datalayer_push;
 
   // Add JS headers:
   if (!empty($script)) {
@@ -722,6 +728,20 @@ function ga_push_ga_push_method() {
     'available' => class_exists('ssga') && is_callable('curl_init'),
   );
 
+  $method[GA_PUSH_METHOD_DATALAYER_JS] = [
+    'name' => 'Datalayer.js (js)',
+    'description' => \Drupal::l('Data Layer', Url::fromUri('https://developers.google.com/tag-manager/devguide')),
+    'machine_name' => GA_PUSH_METHOD_DATALAYER_JS,
+    'callback' => 'ga_push_method_datalayer',
+    'file' => $module_path . '/inc/ga_push.datalayer.inc',
+    'implements' => [
+      GA_PUSH_TYPE_EVENT => TRUE,
+    ],
+    'side' => GA_PUSH_CLIENT_SIDE,
+    'tracking_method' => GA_PUSH_TRACKING_METHOD_UNIVERSAL,
+    'available' => TRUE,
+  ];
+
   return $method;
 }
 
@@ -764,8 +784,8 @@ function ga_push_analyticsjs_measurement_protocol_map() {
     'eventValue'      => 'ev',
     'nonInteraction'  => 'ni',
     // Exception:
-    'exDescription'   => 'exd',
-    'exFatal'         => 'exf',
+    'exDescription'	  => 'exd',
+    'exFatal'	        => 'exf',
     // Pageview:
     'location'        => 'dh',
     'page'            => 'dp',
@@ -875,4 +895,53 @@ function ga_push_clean_empty_array_tail($array) {
     }
   }
   return $array;
+}
+
+/**
+ * Implements hook_form_rules_expression_edit_alter().
+ */
+function ga_push_form_rules_expression_edit_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  $ga_push_rule_action_list = [
+    'ga_push_event',
+    'ga_push_exception',
+    'ga_push_page_view',
+    'ga_push_social',
+  ];
+
+  if (in_array($form_state->get('action_id'), $ga_push_rule_action_list)) {
+    // Use select widget.
+    // @WORKAROUND: set ga push event rule action method as option list. Now rules doesn't support it.
+    // @TODO: don't use this when option list is allowed!
+    $mode = $form_state->get('context_method');
+    if ($mode == 'input') {
+      $form['context']['method']['setting']['#type'] = 'select';
+      $form['context']['method']['setting']['#options'] = ga_push_get_methods_option_list_event();
+      if (empty($form['context']['method']['setting']['#default_value'])) {
+        $form['context']['method']['setting']['#default_value'] = \Drupal::config('ga_push.settings')->get('default_method');
+      }
+    }
+  }
+
+  if ($form_state->get('action_id') == 'ga_push_event') {
+    // Event only will be visible if:
+    // - Datalayer method is selected.
+    // - Default method is selected and is set up as datalayer.
+    $default_method_key = \Drupal::config('ga_push.settings')->get('default_method');
+    $states = [];
+    $states['visible'] = [
+      '#edit-context-method-setting' => [
+        ['value' => 'datalayer-js'],
+      ],
+    ];
+
+    if ($default_method_key == GA_PUSH_METHOD_DATALAYER_JS) {
+      $states['visible']['#edit-context-method-setting'][] = ['value' => 'default'];
+    }
+
+    $form['context']['event'] += [
+      '#states' => $states,
+    ];
+  }
+
 }

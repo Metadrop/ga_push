@@ -12,6 +12,11 @@ use Drupal\rules\Core\RulesActionBase;
  *   label = @Translation("Ga push: social"),
  *   category = @Translation("GA Push"),
  *   context = {
+ *     "method" = @ContextDefinition("string",
+ *       label = @Translation("Method"),
+ *       description = @Translation("Select the method. If none is selected default method will be used."),
+ *       required = FALSE,
+ *     ),
  *     "socialNetwork" = @ContextDefinition("string",
  *       label = @Translation("Social network"),
  *       description = @Translation("The network on which the action occurs (e.g. Facebook, Twitter)."),
@@ -30,7 +35,7 @@ use Drupal\rules\Core\RulesActionBase;
  *   },
  * )
  */
-class Social extends RulesActionBase {
+class Social extends Base {
 
   /**
    * Executes the action with the given context.
@@ -41,6 +46,7 @@ class Social extends RulesActionBase {
       'socialNetwork' => $this->getContextValue('socialNetwork'),
       'socialAction' => $this->getContextValue('socialAction'),
       'socialTarget' => $this->getContextValue('socialTarget'),
-    ));
+    ), $this->getMethod());
   }
+
 }
