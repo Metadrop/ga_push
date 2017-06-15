@@ -70,7 +70,7 @@ function ga_push_page_attachments(array &$attachments) {
   module_load_include('inc', 'ga_push', 'inc/ga_push.ga_js');
   $ga_js_push = ga_push_method_ga_js_push();
   $script .= $ga_js_push;
-  
+
   module_load_include('inc', 'ga_push', 'inc/ga_push.analytics_js');
   $analytics_js_push = ga_push_method_analytics_js_push();
   $script .= $analytics_js_push;
@@ -86,7 +86,7 @@ function ga_push_page_attachments(array &$attachments) {
       'ga_push_tracking_script',
     ];
   }
-  
+
 }
 
 /**
@@ -764,8 +764,8 @@ function ga_push_analyticsjs_measurement_protocol_map() {
     'eventValue'      => 'ev',
     'nonInteraction'  => 'ni',
     // Exception:
-    'exDescription'	  => 'exd',
-    'exFatal'	        => 'exf',
+    'exDescription'   => 'exd',
+    'exFatal'         => 'exf',
     // Pageview:
     'location'        => 'dh',
     'page'            => 'dp',
