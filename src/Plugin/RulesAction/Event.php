@@ -40,7 +40,7 @@ namespace Drupal\ga_push\Plugin\RulesAction;
  *     ),
  *     "non-interaction" = @ContextDefinition("boolean",
  *       label = @Translation("Non interaction"),
- *       description = @Translation("A boolean that when set to true, indicates that the event hit will not be used in bounce-rate calculation. (Not compatible with SSGA method)."),
+ *       description = @Translation("A boolean that when set to true, indicates that the event hit will not be used in bounce-rate calculation."),
  *       default_value = FALSE,
  *       required = FALSE
  *     )

@@ -13,7 +13,6 @@ use Drupal\Core\Form\FormStateInterface;
 // Classic GA.
 define('GA_PUSH_METHOD_DEFAULT', 'default');
 define('GA_PUSH_METHOD_GA_JS', 'ga-js');
-define('GA_PUSH_METHOD_SSGA', 'ssga');
 define('GA_PUSH_METHOD_PHP_GA', 'php-ga');
 define('GA_PUSH_METHOD_DATALAYER_JS', 'datalayer-js');
 // Universal Tracking, Measurement Protocol.
@@ -132,7 +131,6 @@ function ga_push_page_attachments(array &$attachments) {
  *
  * @see https://developers.google.com/analytics/devguides/collection/gajs/
  *     - GA_PUSH_METHOD_JS
- *     - GA_PUSH_METHOD_SSGA
  *     - GA_PUSH_METHOD_PHP_GA
  *   - Universal Tracking, Measurement Protocol.
  * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/
@@ -725,20 +723,6 @@ function ga_push_ga_push_method() {
     'side' => GA_PUSH_SERVER_SIDE,
     'tracking_method' => GA_PUSH_TRACKING_METHOD_CLASSIC,
     'available' => 'ga_push_method_php_ga_available',
-  ];
-
-  $method[GA_PUSH_METHOD_SSGA] = [
-    'name' => 'SSGA (php)',
-    'description' => '@deprecated requires php 5.2+, curl and ssga libraries',
-    'machine_name' => GA_PUSH_METHOD_SSGA,
-    'callback' => 'ga_push_method_ssga',
-    'file' => $module_path . '/inc/ga_push.ssga.inc',
-    'implements' => [
-      GA_PUSH_TYPE_EVENT => TRUE,
-    ],
-    'side' => GA_PUSH_SERVER_SIDE,
-    'tracking_method' => GA_PUSH_TRACKING_METHOD_CLASSIC,
-    'available' => class_exists('ssga') && is_callable('curl_init'),
   ];
 
   $method[GA_PUSH_METHOD_DATALAYER_JS] = [

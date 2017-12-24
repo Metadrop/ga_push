@@ -25,11 +25,6 @@ Requeriments: Google Analytics 7.x-1.x https://drupal.org/project/google_analyti
 
 - PHP: It sends the data on server-side. One of these libraries are required:
 
-  - SSGA: Deprecated library(2009) to PHP 5.2+ versions
-    You don't need to download this library, a modified version of this library 
-    that implements curl is included on this module.
-    Forked from: http://code.google.com/p/serversidegoogleanalytics/
-
   - PHP-GA: Recomended library only for versión 5.3+
     Requires PHP 5.3 as namespaces and closures are used.
     Download from: https://github.com/thomasbachem/php-ga
