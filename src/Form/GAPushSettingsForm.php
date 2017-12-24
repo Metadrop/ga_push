@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * GA Push Settings Form.
  */
-class GA_PushSettingsForm extends ConfigFormBase {
+class GAPushSettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
