@@ -28,19 +28,17 @@ class GAPushFormValidateSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Active forms'),
       '#default_value' => $config->get('form_list'),
       '#rows' => 10,
-      '#description' => t('Insert the form ids to be logged on validate by line. You can use regular expressions.'),
+      '#description' => $this->t('Insert the form ids to be logged on validate by line. You can use regular expressions.'),
     ];
 
     $form['show_form_ids'] = [
       '#type' => 'checkbox',
-      '#title' => t('Show form ids'),
+      '#title' => $this->t('Show form ids'),
       '#default_value' => $config->get('show_form_ids'),
     ];
 
     return parent::buildForm($form, $form_state);
   }
-
-  // @TODO Validate
 
   /**
    * {@inheritdoc}
