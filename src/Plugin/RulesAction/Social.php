@@ -2,8 +2,6 @@
 
 namespace Drupal\ga_push\Plugin\RulesAction;
 
-use Drupal\rules\Core\RulesActionBase;
-
 /**
  * Provides a 'Ga Push Social' action.
  *
@@ -39,14 +37,13 @@ class Social extends Base {
 
   /**
    * Executes the action with the given context.
-   *
    */
   protected function doExecute() {
-    ga_push_add_social(array(
+    ga_push_add_social([
       'socialNetwork' => $this->getContextValue('socialNetwork'),
       'socialAction' => $this->getContextValue('socialAction'),
       'socialTarget' => $this->getContextValue('socialTarget'),
-    ), $this->getMethod());
+    ], $this->getMethod());
   }
 
 }

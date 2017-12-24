@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Test case for testing the GA Push module.
@@ -17,11 +18,11 @@ class GAPushUnitTestCase extends DrupalUnitTestCase {
    * {@inheritdoc}
    */
   public static function getInfo() {
-    return array(
+    return [
       'name' => 'GA Push functionality',
       'description' => 'Test the JS push types output.',
       'group' => 'GA Push',
-    );
+    ];
   }
 
   /**
@@ -31,48 +32,45 @@ class GAPushUnitTestCase extends DrupalUnitTestCase {
     parent::setUp('ga_push', 'googleanalytics');
 
     // $ua_code = 'UA-123456-1';
-    // variable_set('googleanalytics_account', $ua_code);
-
+    // variable_set('googleanalytics_account', $ua_code);.
     // Get defined vars:
     module_load_include('module', 'ga_push');
 
     // Common pushes:
-    $this->pushes = array();
+    $this->pushes = [];
 
     // Events:
-
-    $this->pushes[GA_PUSH_TYPE_EVENT]['calv'] = array(
+    $this->pushes[GA_PUSH_TYPE_EVENT]['calv'] = [
       'eventCategory'        => 'Videos',
       'eventAction'          => 'Play',
       'eventLabel'           => 'Gone With the Wind',
       'eventValue'           => 1,
       'nonInteraction'       => FALSE,
-    );
+    ];
 
-    $this->pushes[GA_PUSH_TYPE_EVENT]['calvn'] = array(
+    $this->pushes[GA_PUSH_TYPE_EVENT]['calvn'] = [
       'eventCategory'        => 'Videos',
       'eventAction'          => 'Play',
       'eventLabel'           => 'Gone With the Wind',
       'eventValue'           => 1,
       'nonInteraction'       => TRUE,
-    );
+    ];
 
-    $this->pushes[GA_PUSH_TYPE_EVENT]['ca'] = array(
+    $this->pushes[GA_PUSH_TYPE_EVENT]['ca'] = [
       'eventCategory'        => 'Videos',
       'eventAction'          => 'Play',
-    );
+    ];
 
     // Social:
-
-    $this->pushes[GA_PUSH_TYPE_SOCIAL]['nat'] = array(
+    $this->pushes[GA_PUSH_TYPE_SOCIAL]['nat'] = [
       'socialNetwork' => 'facebook',
       'socialAction'  => 'like',
       'socialTarget'  => 'http://mycoolpage.com',
-    );
+    ];
 
-    $this->pushes[GA_PUSH_TYPE_SOCIAL]['n'] = array(
+    $this->pushes[GA_PUSH_TYPE_SOCIAL]['n'] = [
       'socialNetwork' => 'facebook',
-    );
+    ];
 
   }
 

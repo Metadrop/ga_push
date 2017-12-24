@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Universal Analytics js: method and functions.
@@ -8,10 +9,10 @@
  * GA Push Method callback: UTMP (js).
  */
 function ga_push_method_analytics_js($push, $type, $options) {
-  $push_info = array(
+  $push_info = [
     'push' => $push,
     'type' => $type,
-  );
+  ];
   $_SESSION['ga_push_' . GA_PUSH_METHOD_ANALYTICS_JS][] = $push_info;
 }
 
@@ -51,7 +52,7 @@ function ga_push_method_analytics_js_push() {
  * @param array $push
  *   Push data.
  * @param string $type
- *   Push type
+ *   Push type.
  *
  * @return string
  *   Script code.
@@ -86,7 +87,6 @@ function ga_push_method_analytics_js_push_script($push, $type) {
   return $script;
 }
 
-
 /**
  * Generates the ga JS code for pushing an event to GA.
  *
@@ -99,10 +99,10 @@ function ga_push_method_analytics_js_push_script($push, $type) {
 function _ga_push_method_analytics_js_push_event_script($push) {
 
   // Optional: default values.
-  $push += array(
+  $push += [
     'eventLabel' => '',
     'eventValue' => 1,
-  );
+  ];
 
   // Convert to JS function.
   $script = _ga_push_method_analytics_js_push_send_script($push, 'event');
@@ -161,4 +161,3 @@ function _ga_push_method_analytics_js_push_send_script($push, $hit_type) {
 
   return $script;
 }
-

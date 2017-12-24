@@ -1,10 +1,13 @@
 <?php
+
 /**
  * @file
  * UTMP: method and functions for Universal Tracking Measure Protocol.
  *
  * @see https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide
  */
+
+use Drupal\Component\Utility\UrlHelper;
 
 // Google UTMP Endpoint URL.
 define('GA_PUSH_METHOD_UTMP_HOST_ENDPOINT', 'ssl.google-analytics.com/collect');
@@ -84,17 +87,17 @@ function ga_push_method_php_utmp_construct_event_request_data($push) {
  *     - items: Array with data to send to GA for each item.
  */
 function ga_push_method_utmp_php_construct_ecommerce_request_data($push) {
-  $data = array();
+  $data = [];
 
   // Transaction data.
-  $tdata = array('t' => 'transaction');
+  $tdata = ['t' => 'transaction'];
   $tdata += ga_push_analyticsjs_measurement_protocol_mapping($push['trans']);
   $data['transaction'] = $tdata;
 
   // Items data.
-  $data['items'] = array();
+  $data['items'] = [];
   foreach ($push['items'] as $value) {
-    $idata = array('t' => 'item');
+    $idata = ['t' => 'item'];
     $idata += ga_push_analyticsjs_measurement_protocol_mapping($value);
     $data['items'][] = $idata;
   }
@@ -157,19 +160,19 @@ function ga_push_method_php_utmp_construct_social_request_data($push) {
  * @see ga_push_add()
  * @see https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide
  */
-function ga_push_method_utmp_php_request($data = array(), $options = array(), $method = 'POST') {
+function ga_push_method_utmp_php_request($data = [], $options = [], $method = 'POST') {
   $ga_config = \Drupal::config('google_analytics.settings');
 
-  $data['v']   = 1;
+  $data['v'] = 1;
   // Options variables:
   $data['tid'] = !empty($options['tid']) ? $options['tid'] : $ga_config->get('account');
   $data['cid'] = !empty($options['cid']) ? $options['cid'] : ga_push_method_php_utmp_get_uuid();
 
   // Optional values:
-  $optional = array(
+  $optional = [
     'ua',
     'uip',
-  );
+  ];
   foreach ($optional as $value) {
     if (array_key_exists($value, $options)) {
       $data[$value] = $options[$value];
@@ -182,33 +185,32 @@ function ga_push_method_utmp_php_request($data = array(), $options = array(), $m
   // server, you can specify both values in the measurement protocol, and they
   // will override the values Google Analytics normally obtains from the
   // request headers.
-
   $user_agent = !empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : NULL;
   if (!empty($user_agent)) {
-    $data += array('ua' => $user_agent);
+    $data += ['ua' => $user_agent];
   }
 
   $ip = \Drupal::request()->getClientIp();
   if (!empty($ip)) {
-    $data += array('uip' => $ip);
+    $data += ['uip' => $ip];
   }
 
   $url      = 'https://' . GA_PUSH_METHOD_UTMP_HOST_ENDPOINT;
   $response = NULL;
   // Prevent browser cached data.
-  $data     += array ('z' => mt_rand());
+  $data += ['z' => mt_rand()];
 
   try {
-    switch($method) {
+    switch ($method) {
       case 'POST':
         $response = \Drupal::httpClient()
-          ->post($url, array('form_params' => $data));
+          ->post($url, ['form_params' => $data]);
         break;
 
       case 'GET':
         // @TODO better handling for query params.
         $response = \Drupal::httpClient()
-          ->get($url . '?' . \Drupal\Component\Utility\UrlHelper::buildQuery($data));
+          ->get($url . '?' . UrlHelper::buildQuery($data));
         break;
     }
   }
@@ -244,18 +246,18 @@ function ga_push_method_php_utmp_get_uuid() {
  */
 function ga_push_method_php_utmp_gen_uuid() {
   return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-    // 32 bits for "time_low"
+    // 32 bits for "time_low".
     mt_rand(0, 0xffff), mt_rand(0, 0xffff),
-    // 16 bits for "time_mid"
+    // 16 bits for "time_mid".
     mt_rand(0, 0xffff),
     // 16 bits for "time_hi_and_version",
-    // four most significant bits holds version number 4
+    // four most significant bits holds version number 4.
     mt_rand(0, 0x0fff) | 0x4000,
     // 16 bits, 8 bits for "clk_seq_hi_res",
     // 8 bits for "clk_seq_low",
-    // two most significant bits holds zero and one for variant DCE1.1
+    // two most significant bits holds zero and one for variant DCE1.1.
     mt_rand(0, 0x3fff) | 0x8000,
-    // 48 bits for "node"
+    // 48 bits for "node".
     mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
   );
 }

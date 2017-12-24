@@ -2,8 +2,6 @@
 
 namespace Drupal\ga_push\Plugin\RulesAction;
 
-use Drupal\rules\Core\RulesActionBase;
-
 /**
  * Provides a 'Ga Push Exception' action.
  *
@@ -33,14 +31,13 @@ class Exception extends Base {
 
   /**
    * Executes the action with the given context.
-   *
    */
   protected function doExecute() {
     ga_push_add_exception(
-      array(
+      [
         'exDescription' => $this->getContextValue('exDescription'),
         'exFatal' => $this->getContextValue('exFatal'),
-      ),
+      ],
       $this->getMethod()
     );
   }

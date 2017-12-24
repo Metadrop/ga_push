@@ -2,8 +2,6 @@
 
 namespace Drupal\ga_push\Plugin\RulesAction;
 
-use Drupal\rules\Core\RulesActionBase;
-
 /**
  * Provides a 'Ga Push Page View' action.
  *
@@ -39,15 +37,14 @@ class PageView extends Base {
 
   /**
    * Executes the action with the given context.
-   *
    */
   protected function doExecute() {
     ga_push_add_pageview(
-      array(
+      [
         'location' => $this->getContextValue('location'),
         'page'     => $this->getContextValue('page'),
-        'title'    => $this->getContextValue('title')
-      ),
+        'title'    => $this->getContextValue('title'),
+      ],
       $this->getMethod()
     );
   }

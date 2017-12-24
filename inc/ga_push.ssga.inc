@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file
- * SSGA: method and functions
+ * SSGA: method and functions.
  */
 
 /**
@@ -29,15 +30,14 @@ function ga_push_method_ssga($push, $type, $options) {
 
     // Set an event based on:
     // http://code.google.com/apis/analytics/docs/tracking/eventTrackerGuide.html
-
     switch ($type) {
       case GA_PUSH_TYPE_EVENT:
 
         // Complete optional parameters:
-        $push += array(
+        $push += [
           'eventLabel' => '',
           'eventValue' => 1,
-        );
+        ];
 
         $ga->setEvent($push['eventCategory'], $push['eventAction'], $push['eventLabel'], $push['eventValue']);
         break;
@@ -45,13 +45,13 @@ function ga_push_method_ssga($push, $type, $options) {
       /*
       case '_trackPageview': //TODO: is useful?
 
-        //Set a pageview
-        $ga->setPageView("/de/serverside/test");
-        //Set page title
-        $ga->setPageTitle("Test");
+      //Set a pageview
+      $ga->setPageView("/de/serverside/test");
+      //Set page title
+      $ga->setPageTitle("Test");
 
-        break;
-      */
+      break;
+       */
     }
 
     // Push the event.

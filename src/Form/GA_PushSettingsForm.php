@@ -5,6 +5,9 @@ namespace Drupal\ga_push\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
+/**
+ * GA Push Settings Form.
+ */
 class GA_PushSettingsForm extends ConfigFormBase {
 
   /**
@@ -22,17 +25,17 @@ class GA_PushSettingsForm extends ConfigFormBase {
 
     $elements = ga_push_get_methods_option_list(NULL, FALSE);
 
-    $form['ga_push_default_method'] = array(
+    $form['ga_push_default_method'] = [
       '#type' => 'radios',
       '#title' => $this->t('Default method'),
       '#options' => $elements,
       '#default_value' => $config->get('default_method'),
-    );
+    ];
 
     return parent::buildForm($form, $form_state);
   }
 
-  //@TODO Validate
+  // @TODO Validate
 
   /**
    * {@inheritdoc}

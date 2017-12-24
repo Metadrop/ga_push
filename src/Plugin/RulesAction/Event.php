@@ -2,8 +2,6 @@
 
 namespace Drupal\ga_push\Plugin\RulesAction;
 
-use Drupal\rules\Core\RulesActionBase;
-
 /**
  * Provides a 'Ga Push Event' action.
  *

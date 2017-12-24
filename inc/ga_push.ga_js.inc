@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Classic GA Javascript: method and functions.
@@ -9,10 +10,10 @@
  */
 function ga_push_method_ga_js($push, $type, $options) {
 
-  $push_info = array(
+  $push_info = [
     'push' => $push,
     'type' => $type,
-  );
+  ];
   $_SESSION['ga_push_' . GA_PUSH_METHOD_GA_JS][] = $push_info;
 }
 
@@ -42,19 +43,19 @@ function ga_push_method_ga_js_push() {
           case GA_PUSH_TYPE_EVENT:
 
             // Optional: default values:
-            $push += array(
+            $push += [
               'eventLabel' => '',
               'eventValue' => 1,
-              // 'non-interaction' => false,
-            );
+              // 'non-interaction' => false,.
+            ];
 
-            $push_map = array(
+            $push_map = [
               'eventCategory' => 'category',
               'eventAction'   => 'action',
               'eventLabel'    => 'label',
               'eventValue'    => 'value',
-              'non-interaction' => 'non-interaction', // ?
-            );
+              'non-interaction' => 'non-interaction',
+            ];
 
             // Mapping.
             $mapped_push = ga_push_push_key_mapper($push_map, $push);
@@ -73,7 +74,7 @@ function ga_push_method_ga_js_push() {
           case GA_PUSH_TYPE_ECOMMERCE:
 
             // Transaction.
-            $transaction_push_map = array(
+            $transaction_push_map = [
               'id'             => 'order_id',
               'affiliation'    => 'affiliation',
               'revenue'        => 'total',
@@ -82,7 +83,7 @@ function ga_push_method_ga_js_push() {
               'city'           => 'city',
               'region'         => 'region',
               'country'        => 'country',
-            );
+            ];
 
             // Mapping and initialize empty values assure param order (so no
             // param is in place of another).
@@ -97,14 +98,14 @@ function ga_push_method_ga_js_push() {
             $script .= "_gaq.push(" . json_encode(array_values($transaction_mapped_push)) . ");\n";
 
             // Items.
-            $item_push_map = array(
+            $item_push_map = [
               'id'       => 'order_id',
               'sku'      => 'sku',
               'name'     => 'name',
               'category' => 'category',
               'price'    => 'price',
               'quantity' => 'quantity',
-            );
+            ];
 
             // Build up the items.
             foreach ($push['items'] as $value) {
@@ -138,6 +139,6 @@ function ga_push_method_ga_js_push() {
 
     }
   }
-  
+
   return $script;
 }
