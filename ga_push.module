@@ -110,39 +110,24 @@ function ga_push_page_attachments(array &$attachments) {
  * For better documentation understanding this function has been splited in to
  * several functions and should not be called directly.
  *
- * @see ga_push_add_ecommerce()
- * @see ga_push_add_event()
- * @see ga_push_add_pageview()
- * @see ga_push_add_social()
- *
- * @param array $push_data['push']
- *   The push parameters. The value depends on the $type parameter.
- * @param string $push_data['type']
- *   (optional) The GA Push type:
- *   - GA_PUSH_TYPE_EVENT (default)
- *   - GA_PUSH_TYPE_ECOMMERCE
- *   - GA_PUSH_TYPE_PAGEVIEW
- *   - GA_PUSH_TYPE_SOCIAL.
- * @param string $push_data['method_key']
- *   (optional) The method identificator
- *   - The globally configured setting
+ * @param array $push_params
+ *   - 'push': The push parameters. The value depends on the $type parameter.
+ *   - 'type': (optional) The GA Push type:
+ *     - GA_PUSH_TYPE_EVENT (default)
+ *     - GA_PUSH_TYPE_ECOMMERCE
+ *     - GA_PUSH_TYPE_PAGEVIEW
+ *     - GA_PUSH_TYPE_SOCIAL.
+ *   - 'method_key': (optional) The method identificator
+ *     - The globally configured setting
  *     - GA_PUSH_METHOD_DEFAULT (default)
- *   - Classic GA.
- *
- * @see https://developers.google.com/analytics/devguides/collection/gajs/
- *     - GA_PUSH_METHOD_JS
- *     - GA_PUSH_METHOD_PHP_GA
- *   - Universal Tracking, Measurement Protocol.
- * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/
- *     - GA_PUSH_METHOD_UTMP_PHP
- *     - GA_PUSH_METHOD_ANALYTICS_JS
- *
- * @param array $push_data['options']
+ *     - Classic GA.
+ * @param array $options
  *   (optional) An associative array of additional options, with the following
  *   elements:
  *
  *   Only for server-side methods:
- *     - 'tid': Override Tracking ID / Web Property ID (Classic User account aka UA)
+ *     - 'tid': Override Tracking ID / Web Property ID (Classic User account
+ *       aka UA)
  *       of the google analytics module config.
  *       Universal and Classic GA Methods.
  *     - 'cid': Override Universal Client ID of the current user cookie.
@@ -157,9 +142,23 @@ function ga_push_page_attachments(array &$attachments) {
  *       Only for Universal GA methods.
  *
  *   All methods:
- *     - 'context': An array of aditional info to be passed to drupal_alter implementations.
+ *     - 'context': An array of aditional info to be passed to drupal_alter
+ *       implementations.
+ *
+ * @see https://developers.google.com/analytics/devguides/collection/gajs/
+ *   - GA_PUSH_METHOD_JS
+ *   - GA_PUSH_METHOD_PHP_GA
+ *   - Universal Tracking, Measurement Protocol.
+ * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/
+ *   - GA_PUSH_METHOD_UTMP_PHP
+ *   - GA_PUSH_METHOD_ANALYTICS_JS
+ *
+ * @see ga_push_add_ecommerce()
+ * @see ga_push_add_event()
+ * @see ga_push_add_pageview()
+ * @see ga_push_add_social()
  */
-function ga_push_add($push_params, $type = GA_PUSH_TYPE_EVENT, $method_key = NULL, $options = []) {
+function ga_push_add(array $push_params, $type = GA_PUSH_TYPE_EVENT, $method_key = NULL, array $options = []) {
   global $user;
 
   $push = [
@@ -217,9 +216,16 @@ function ga_push_add($push_params, $type = GA_PUSH_TYPE_EVENT, $method_key = NUL
 
 /**
  * Maps old method keys to the new ones.
- * This function is for legacy compatibility and will be removed on next releases.
+ *
+ * This function is for legacy compatibility and will be removed on next
+ * releases.
+ *
+ * @param array $push
+ *   Push data.
+ * @param string $type
+ *   Push type.
  */
-function ga_push_add_legacy_params($push, $type) {
+function ga_push_add_legacy_params(array $push, $type) {
 
   switch ($type) {
     case  GA_PUSH_TYPE_ECOMMERCE:
@@ -269,8 +275,61 @@ function ga_push_add_legacy_params($push, $type) {
  * the server redirects the user to a "Thank You" or receipt page with
  * transaction details and a receipt of the purchase.
  *
+ * @param array $push
+ *   An associative array containing:
+ *   - trans: array
+ *     Transaction data. An associative array containing:
+ *     - id:
+ *       The transaction ID. (e.g. 1234).
+ *     - affiliation:
+ *      (optional) The store or affiliation from which this transaction occurred
+ *      (e.g. Acme Clothing).
+ *     - revenue:
+ *       Specifies the total revenue or grand total associated with the
+ *       transaction (e.g. 11.99). This value may include shipping, tax costs,
+ *       or other adjustments to total revenue that you want to include as part
+ *       of your revenue calculations.
+ *     - tax:
+ *       (optional) Specifies the total tax of the transaction. (e.g. 1.29).
+ *     - shipping:
+ *       (optional) Specifies the total shipping cost of the transaction.
+ *       (e.g. 5).
+ *     - city:
+ *       (optional) city. Only compatible with Classic Analytics.
+ *     - region:
+ *       (optional) state or province. Only compatible with Classic Analytics.
+ *     - country:
+ *       (optional) country. Only compatible with Classic Analytics.
+ *     - currency:
+ *       currency (ISO 4217).
+ *
+ *   - items: array
+ *     Items data. A multiple associative array containing on each row:
+ *     - id:
+ *       The transaction ID. This ID is what links items to the transactions to
+ *       which they belong. (e.g. 1234)
+ *     - name:
+ *       The item name. (e.g. Fluffy Pink Bunnies).
+ *     - sku:
+ *       (optional) Specifies the SKU or item code. (e.g. SKU47).
+ *     - category:
+ *       (optional) The category to which the item belongs (e.g. Party Toys).
+ *     - price:
+ *       (optional) The individual, unit, price for each item. (e.g. 11.99).
+ *     - quantity:
+ *       (optional) The number of units purchased in the transaction.
+ *       If a non-integer value is passed into this field (e.g. 1.5), it will be
+ *       rounded to the closest integer value.
+ *     - currency:
+ *       currency (ISO 4217)
+ * @param string $method_key
+ *   Method key.
+ * @param array $options
+ *   Extra options.
+ *
  * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/ecommerce
  * @see https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingEcommerce
+ * @see ga_push_add()
  *
  * @note Important! The Ecommerce plug-in should not be used alongside the
  * Enhanced Ecommerce (ec.js) plug-in.
@@ -302,61 +361,8 @@ function ga_push_add_legacy_params($push, $type) {
  *     ),
  *   ));
  * @endcode
- *
- * @param array $push
- *   An associative array containing:
- *   - trans: array
- *     Transaction data. An associative array containing:
- *     - id:
- *       The transaction ID. (e.g. 1234).
- *     - affiliation:
- *      (optional) The store or affiliation from which this transaction occurred
- *      (e.g. Acme Clothing).
- *     - revenue:
- *       Specifies the total revenue or grand total associated with the
- *       transaction (e.g. 11.99). This value may include shipping, tax costs,
- *       or other adjustments to total revenue that you want to include as part
- *       of your revenue calculations.
- *     - tax:
- *       (optional) Specifies the total tax of the transaction. (e.g. 1.29).
- *     - shipping:
- *       (optional) Specifies the total shipping cost of the transaction. (e.g. 5).
- *     - city:
- *       (optional) city. Only compatible with Classic Analytics.
- *     - region:
- *       (optional) state or province. Only compatible with Classic Analytics.
- *     - country:
- *       (optional) country. Only compatible with Classic Analytics.
- *     - currency:
- *       currency (ISO 4217).
- *
- *   - items: array
- *     Items data. A multiple associative array containing on each row:
- *     - id:
- *       The transaction ID. This ID is what links items to the transactions to
- *       which they belong. (e.g. 1234)
- *     - name:
- *       The item name. (e.g. Fluffy Pink Bunnies).
- *     - sku:
- *       (optional) Specifies the SKU or item code. (e.g. SKU47).
- *     - category:
- *       (optional) The category to which the item belongs (e.g. Party Toys).
- *     - price:
- *       (optional) The individual, unit, price for each item. (e.g. 11.99).
- *     - quantity:
- *       (optional) The number of units purchased in the transaction.
- *       If a non-integer value is passed into this field (e.g. 1.5), it will be
- *       rounded to the closest integer value.
- *     - currency:
- *       currency (ISO 4217)
- * @param string $method_key
- *
- * @see ga_push_add()
- * @param array $options
- *
- * @see ga_push_add()
  */
-function ga_push_add_ecommerce($push, $method_key = NULL, $options = []) {
+function ga_push_add_ecommerce(array $push, $method_key = NULL, array $options = []) {
   ga_push_add($push, GA_PUSH_TYPE_ECOMMERCE, $method_key, $options);
 }
 
@@ -367,8 +373,28 @@ function ga_push_add_ecommerce($push, $method_key = NULL, $options = []) {
  * your website. For example, you might want to measure how many times a button
  * was pressed, or how many times a particular item was used in a web game.
  *
+ * @param array $push
+ *   An associative array containing:
+ *   - eventCategory: string
+ *     Typically the object that was interacted with (e.g. button).
+ *   - eventAction: string
+ *     The type of interaction (e.g. click).
+ *   - eventLabel: string
+ *     (optional) Useful for categorizing events (e.g. nav buttons).
+ *   - eventValue: int
+ *     (optional) Values must be non-negative. Useful to pass counts
+ *     (e.g. 4 times).
+ *   - non-interaction: bool
+ *     (optional) A boolean that when set to true, indicates that the event hit
+ *     will not be used in bounce-rate calculation. Defaults to FALSE.
+ * @param string $method_key
+ *   Method key.
+ * @param array $options
+ *   Extra options.
+ *
  * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/events
  * @see https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide
+ * @see ga_push_add()
  *
  * Example:
  * @code
@@ -380,28 +406,8 @@ function ga_push_add_ecommerce($push, $method_key = NULL, $options = []) {
  *     'nonInteraction'       => FALSE,
  *   ));
  * @endcode
- *
- * @param array $push
- *   An associative array containing:
- *   - eventCategory: string
- *     Typically the object that was interacted with (e.g. button).
- *   - eventAction: string
- *     The type of interaction (e.g. click).
- *   - eventLabel: string
- *     (optional) Useful for categorizing events (e.g. nav buttons).
- *   - eventValue: int
- *     (optional) Values must be non-negative. Useful to pass counts (e.g. 4 times).
- *   - non-interaction: bool
- *     (optional) A boolean that when set to true, indicates that the event hit
- *     will not be used in bounce-rate calculation. Defaults to FALSE.
- * @param string $method_key
- *
- * @see ga_push_add()
- * @param array $options
- *
- * @see ga_push_add()
  */
-function ga_push_add_event($push, $method_key = NULL, $options = []) {
+function ga_push_add_event(array $push, $method_key = NULL, array $options = []) {
   ga_push_add($push, GA_PUSH_TYPE_EVENT, $method_key, $options);
 }
 
@@ -411,7 +417,20 @@ function ga_push_add_event($push, $method_key = NULL, $options = []) {
  * Exception measurement allows you to measure the number and type of crashes
  * and exceptions that occur on your property.
  *
+ * @param array $push
+ *   An associative array containing:
+ *   - exDescription: string
+ *     (optional) A description of the exception.
+ *   - exFatal: bool
+ *     (optional) Indicates whether the exception was fatal. true indicates
+ *     fatal.
+ * @param string $method_key
+ *   Method key.
+ * @param array $options
+ *   Extra options.
+ *
  * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/exceptions
+ * see ga_push_add()
  *
  * Example:
  * @code
@@ -422,21 +441,8 @@ function ga_push_add_event($push, $method_key = NULL, $options = []) {
  *     'appVersion'    => 1.0,
  *   ));
  * @endcode
- *
- * @param array $push
- *   An associative array containing:
- *   - exDescription: string
- *     (optional) A description of the exception.
- *   - exFatal: bool
- *     (optional) Indicates whether the exception was fatal. true indicates fatal.
- * @param string $method_key
- *
- * @see ga_push_add()
- * @param array $options
- *
- * @see ga_push_add()
  */
-function ga_push_add_exception($push, $method_key = NULL, $options = []) {
+function ga_push_add_exception(array $push, $method_key = NULL, array $options = []) {
   ga_push_add($push, GA_PUSH_TYPE_EXCEPTION, $method_key, $options);
 }
 
@@ -447,18 +453,6 @@ function ga_push_add_exception($push, $method_key = NULL, $options = []) {
  * particular page on your web site. For a web app, you might decide to track a
  * page when a large portion of the screen changes, for example when the user
  * goes from the home screen to the settings screen.
- *
- * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/pages
- * @see https://developers.google.com/analytics/devguides/collection/gajs/
- *
- * Example:
- * @code
- *    ga_push_add_pageview(array(
- *     'location' => 'https://google.com/analytics',
- *     'page'     => '/my-overridden-page?id=1',
- *     'title'    => 'My overridden page',
- *   ));
- * @endcode
  *
  * @param array $push
  *   An associative array containing:
@@ -472,13 +466,24 @@ function ga_push_add_exception($push, $method_key = NULL, $options = []) {
  *   - title: string
  *     (optional) The title of the page.
  * @param string $method_key
- *
- * @see ga_push_add()
+ *   Method key.
  * @param array $options
+ *   Extra options.
  *
+ * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/pages
+ * @see https://developers.google.com/analytics/devguides/collection/gajs/
  * @see ga_push_add()
+ *
+ * Example:
+ * @code
+ *    ga_push_add_pageview(array(
+ *     'location' => 'https://google.com/analytics',
+ *     'page'     => '/my-overridden-page?id=1',
+ *     'title'    => 'My overridden page',
+ *   ));
+ * @endcode
  */
-function ga_push_add_pageview($push = [], $method_key = NULL, $options = []) {
+function ga_push_add_pageview(array $push = [], $method_key = NULL, array $options = []) {
   ga_push_add($push, GA_PUSH_TYPE_PAGEVIEW, $method_key, $options);
 }
 
@@ -489,8 +494,24 @@ function ga_push_add_pageview($push = [], $method_key = NULL, $options = []) {
  * click on social buttons embedded in webpages. For example, you might measure
  * a Facebook "Like" or a Twitter "Tweet."
  *
+ * @param array $push
+ *   An associative array containing:
+ *   - socialNetwork: string
+ *     (optional) The network on which the action occurs (e.g. Facebook,
+ *     Twitter).
+ *   - socialAction: string
+ *     (optional) The type of action that happens (e.g. Like, Send, Tweet).
+ *   - socialTarget: string
+ *     (optional) Specifies the target of a social interaction. This value is
+ *     typically a URL but can be any text.
+ * @param string $method_key
+ *   Method key.
+ * @param array $options
+ *   Extra options.
+ *
  * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/social-interactions
  * @see https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingSocial
+ * @see ga_push_add()
  *
  * Example:
  * @code
@@ -500,24 +521,8 @@ function ga_push_add_pageview($push = [], $method_key = NULL, $options = []) {
  *     'socialTarget'  => 'http://mycoolpage.com',
  *   ));
  * @endcode
- *
- * @param array $push
- *   An associative array containing:
- *   - socialNetwork: string
- *     (optional) The network on which the action occurs (e.g. Facebook, Twitter).
- *   - socialAction: string
- *     (optional) The type of action that happens (e.g. Like, Send, Tweet).
- *   - socialTarget: string
- *     (optional) Specifies the target of a social interaction. This value is
- *     typically a URL but can be any text.
- * @param string $method_key
- *
- * @see ga_push_add()
- * @param array $options
- *
- * @see ga_push_add()
  */
-function ga_push_add_social($push, $method_key = NULL, $options = []) {
+function ga_push_add_social(array $push, $method_key = NULL, array $options = []) {
   ga_push_add($push, GA_PUSH_TYPE_SOCIAL, $method_key, $options);
 }
 
@@ -806,12 +811,13 @@ function ga_push_analyticsjs_measurement_protocol_map() {
  * @return array
  *   Array with keys translated.
  */
-function ga_push_analyticsjs_measurement_protocol_mapping($data) {
+function ga_push_analyticsjs_measurement_protocol_mapping(array $data) {
   $map = ga_push_analyticsjs_measurement_protocol_map();
   $data_mapped = [];
   foreach ($data as $key => $value) {
     $mkey = isset($map[$key]) ? $map[$key] : $key;
-    // Replace custom dimensions and metrics that uses Analytics.js keys with UTMP keys.
+    // Replace custom dimensions and metrics that uses Analytics.js
+    // keys with UTMP keys.
     $mkey = str_replace(['dimension', 'metric'], ['cd', 'cm'], $mkey);
 
     $data_mapped[$mkey] = $value;
@@ -834,7 +840,7 @@ function ga_push_analyticsjs_measurement_protocol_mapping($data) {
  * @return array
  *   Mapped data.
  */
-function ga_push_push_key_mapper($key_map, $data, $initialize_empty = FALSE) {
+function ga_push_push_key_mapper(array $key_map, array $data, $initialize_empty = FALSE) {
   $mapped_data = [];
   foreach ($key_map as $key => $target) {
     if (isset($data[$key])) {
@@ -860,7 +866,7 @@ function ga_push_push_key_mapper($key_map, $data, $initialize_empty = FALSE) {
  * @return array
  *   Mapped data.
  */
-function ga_push_push_data_mapper($key_map, $data, $initialize_empty = FALSE) {
+function ga_push_push_data_mapper(array $key_map, array $data, $initialize_empty = FALSE) {
   $mapped_data = [];
   foreach ($data as $key => $value) {
     $mkey = isset($key_map[$key]) ? $key_map[$key] : $key;
@@ -883,7 +889,7 @@ function ga_push_push_data_mapper($key_map, $data, $initialize_empty = FALSE) {
  * @return array
  *   Filtered array.
  */
-function ga_push_clean_empty_array_tail($array) {
+function ga_push_clean_empty_array_tail(array $array) {
   if (count($array)) {
     $last_elem = end($array);
     if ($last_elem == '') {

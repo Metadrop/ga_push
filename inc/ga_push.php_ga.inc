@@ -1,8 +1,16 @@
 <?php
+
 /**
  * @file
- * PHP-GA: method and functions
+ * PHP-GA: method and functions.
  */
+
+use UnitedPrototype\GoogleAnalytics\Item;
+use UnitedPrototype\GoogleAnalytics\Transaction;
+use UnitedPrototype\GoogleAnalytics\Event;
+use UnitedPrototype\GoogleAnalytics\Session;
+use UnitedPrototype\GoogleAnalytics\Visitor;
+use UnitedPrototype\GoogleAnalytics\Tracker;
 
 /**
  * GA Push Method callback: PHP-GA (php).
@@ -20,11 +28,11 @@ function ga_push_method_php_ga($push, $type, $options) {
    */
 
   $ua = !empty($options['tid']) ? $options['tid'] : \Drupal::config('ga_push.settings')->get('default_method');
-  $host = str_replace(array('http://', 'https://'), array('', ''), $GLOBALS['base_url']);
-  $tracker = new UnitedPrototype\GoogleAnalytics\Tracker($ua, $host);
+  $host = str_replace(['http://', 'https://'], ['', ''], $GLOBALS['base_url']);
+  $tracker = new Tracker($ua, $host);
 
   // Visitor:
-  $visitor = new UnitedPrototype\GoogleAnalytics\Visitor();
+  $visitor = new Visitor();
   $visitor->setIpAddress(\Drupal::request()->getClientIp());
   $visitor->setUserAgent($_SERVER['HTTP_USER_AGENT']);
   if (!empty($options['utma'])) {
@@ -35,7 +43,7 @@ function ga_push_method_php_ga($push, $type, $options) {
   }
 
   // Session:
-  $session = new UnitedPrototype\GoogleAnalytics\Session();
+  $session = new Session();
   if (!empty($options['utmb'])) {
     $session->fromUtmb($options['utmb']);
   }
@@ -46,7 +54,7 @@ function ga_push_method_php_ga($push, $type, $options) {
   switch ($type) {
 
     case GA_PUSH_TYPE_EVENT:
-      $event = new UnitedPrototype\GoogleAnalytics\Event();
+      $event = new Event();
 
       // Required:
       $event->setCategory($push['eventCategory']);
@@ -70,7 +78,7 @@ function ga_push_method_php_ga($push, $type, $options) {
 
       if (isset($push['trans']) && isset($push['items']) && count($push['items'])) {
 
-        $transaction = new UnitedPrototype\GoogleAnalytics\Transaction();
+        $transaction = new Transaction();
         $transaction->setOrderId($push['trans']['id']);
         $transaction->setAffiliation($push['trans']['affiliation']);
         $transaction->setTotal($push['trans']['revenue']);
@@ -81,7 +89,7 @@ function ga_push_method_php_ga($push, $type, $options) {
         $transaction->setCountry($push['trans']['country']);
 
         foreach ($push['items'] as $value) {
-          $item = new UnitedPrototype\GoogleAnalytics\Item();
+          $item = new Item();
           $item->setOrderId($value['id']);
           $item->setSku($value['sku']);
           $item->setName($value['name']);

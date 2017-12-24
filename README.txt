@@ -11,7 +11,8 @@ other modules.
 UNIVERSAL ANALYTICS
 -------------------
 
-Requeriments: Google Analytics 7.x-2.x https://drupal.org/project/google_analytics
+Requeriments:
+Google Analytics 7.x-2.x https://drupal.org/project/google_analytics
 
 - UTMP-JS:  It sends the data on client-side (next page load).
 - UTMP-PHP: It sends the data on server-side.
@@ -19,7 +20,8 @@ Requeriments: Google Analytics 7.x-2.x https://drupal.org/project/google_analyti
 CLASSIC ANALYTICS
 -----------------
 
-Requeriments: Google Analytics 7.x-1.x https://drupal.org/project/google_analytics
+Requeriments:
+Google Analytics 7.x-1.x https://drupal.org/project/google_analytics
 
 - JS: It sends the data on client-side (next page load).
 

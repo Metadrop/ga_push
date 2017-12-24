@@ -29,9 +29,9 @@ function ga_push_method_utmp_php($push, $type, $options) {
       if (isset($push['trans']) && isset($push['items']) && count($push['items'])) {
         // Construct arrays.
         $ecommerce_data = ga_push_method_utmp_php_construct_ecommerce_request_data($push);
-        // @TODO: Check request response.
 
         // Sending the transaction:
+        // @TODO: Check request response.
         ga_push_method_utmp_php_request($ecommerce_data['transaction'], $options);
 
         // Sending the items:
@@ -70,7 +70,7 @@ function ga_push_method_utmp_php($push, $type, $options) {
  * @return array
  *   Array with the event data preparad to be sent to GA.
  */
-function ga_push_method_php_utmp_construct_event_request_data($push) {
+function ga_push_method_php_utmp_construct_event_request_data(array $push) {
   $push['t'] = 'event';
   return ga_push_analyticsjs_measurement_protocol_mapping($push);
 }
@@ -86,7 +86,7 @@ function ga_push_method_php_utmp_construct_event_request_data($push) {
  *     - transaction: transaction data to send to GA.
  *     - items: Array with data to send to GA for each item.
  */
-function ga_push_method_utmp_php_construct_ecommerce_request_data($push) {
+function ga_push_method_utmp_php_construct_ecommerce_request_data(array $push) {
   $data = [];
 
   // Transaction data.
@@ -114,7 +114,7 @@ function ga_push_method_utmp_php_construct_ecommerce_request_data($push) {
  * @return array
  *   Array with the pageview data ready to be sent to GA.
  */
-function ga_push_method_php_utmp_construct_exception_request_data($push) {
+function ga_push_method_php_utmp_construct_exception_request_data(array $push) {
   $push['t'] = 'exception';
   return ga_push_analyticsjs_measurement_protocol_mapping($push);
 }
@@ -128,7 +128,7 @@ function ga_push_method_php_utmp_construct_exception_request_data($push) {
  * @return array
  *   Array with the pageview data ready to be sent to GA.
  */
-function ga_push_method_php_utmp_construct_pageview_request_data($push) {
+function ga_push_method_php_utmp_construct_pageview_request_data(array $push) {
   $push['t'] = 'pageview';
   return ga_push_analyticsjs_measurement_protocol_mapping($push);
 }
@@ -142,7 +142,7 @@ function ga_push_method_php_utmp_construct_pageview_request_data($push) {
  * @return array
  *   Array with the pageview data ready to be sent to GA.
  */
-function ga_push_method_php_utmp_construct_social_request_data($push) {
+function ga_push_method_php_utmp_construct_social_request_data(array $push) {
   $push['t'] = 'social';
   return ga_push_analyticsjs_measurement_protocol_mapping($push);
 }
@@ -160,7 +160,7 @@ function ga_push_method_php_utmp_construct_social_request_data($push) {
  * @see ga_push_add()
  * @see https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide
  */
-function ga_push_method_utmp_php_request($data = [], $options = [], $method = 'POST') {
+function ga_push_method_utmp_php_request(array $data = [], array $options = [], $method = 'POST') {
   $ga_config = \Drupal::config('google_analytics.settings');
 
   $data['v'] = 1;

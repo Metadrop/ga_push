@@ -63,7 +63,8 @@ function ga_push_method_ga_js_push() {
             // Add method.
             array_unshift($mapped_push, '_trackEvent');
 
-            // Convert to JSON to avoid special chars problems that could broke syntax.
+            // Convert to JSON to avoid special chars problems that could broke
+            // syntax.
             $script_params = json_encode(array_values($mapped_push));
 
             // Convert to JS function.
@@ -119,10 +120,11 @@ function ga_push_method_ga_js_push() {
               $script .= "_gaq.push(" . json_encode(array_values($item_mapped_push)) . ");\n";
             }
 
-            // Currency: by default, you can configure a common, global, currency
-            // for all transactions and items through the Google Analytics management
-            // web interface. By default, the global currency is used for all items
-            // and transactions.
+            // Currency: by default, you can configure a common, global,
+            // currency for all transactions and items through the
+            // Google Analytics management web interface.
+            // By default, the global currency is used for all items and
+            // transactions.
             if (!empty($push['trans']['currency'])) {
               $script .= "_gaq.push(['_set', 'currencyCode', '"
                 . $push['trans']['currency'] . "']);\n";

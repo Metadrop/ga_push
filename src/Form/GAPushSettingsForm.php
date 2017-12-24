@@ -35,8 +35,6 @@ class GAPushSettingsForm extends ConfigFormBase {
     return parent::buildForm($form, $form_state);
   }
 
-  // @TODO Validate
-
   /**
    * {@inheritdoc}
    */

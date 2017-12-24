@@ -57,7 +57,7 @@ function ga_push_method_analytics_js_push() {
  * @return string
  *   Script code.
  */
-function ga_push_method_analytics_js_push_script($push, $type) {
+function ga_push_method_analytics_js_push_script(array $push, $type) {
 
   switch ($type) {
     case GA_PUSH_TYPE_EVENT:
@@ -96,7 +96,7 @@ function ga_push_method_analytics_js_push_script($push, $type) {
  * @return string
  *   JS code with push code.
  */
-function _ga_push_method_analytics_js_push_event_script($push) {
+function _ga_push_method_analytics_js_push_event_script(array $push) {
 
   // Optional: default values.
   $push += [
@@ -119,7 +119,7 @@ function _ga_push_method_analytics_js_push_event_script($push) {
  * @return string
  *   JS code with push code.
  */
-function _ga_push_method_analytics_js_push_ecommerce_script($push) {
+function _ga_push_method_analytics_js_push_ecommerce_script(array $push) {
 
   // Include needed additional ga e-commerce library.
   $script = "ga('require', 'ecommerce', 'ecommerce.js');\n";
@@ -149,7 +149,7 @@ function _ga_push_method_analytics_js_push_ecommerce_script($push) {
  * @return string
  *   JS code with push code.
  */
-function _ga_push_method_analytics_js_push_send_script($push, $hit_type) {
+function _ga_push_method_analytics_js_push_send_script(array $push, $hit_type) {
   // Remove empty parameters:
   $push = array_filter($push);
 
