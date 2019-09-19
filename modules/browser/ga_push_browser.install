@@ -79,3 +79,13 @@ function ga_push_browser_schema() {
 
   return $schema;
 }
+
+
+/**
+ * Install ga_push_browser_schema().
+ */
+function ga_push_browser_update_7001() {
+  if(!db_table_exists('ga_push_browser_event')) {
+    drupal_install_schema('ga_push_browser');
+  }
+}
