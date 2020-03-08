@@ -29,7 +29,7 @@ function ga_push_method_ga_js_push() {
   $session_key = 'ga_push_' . GA_PUSH_METHOD_GA_JS;
   $script = NULL;
   if (isset($_SESSION[$session_key])) {
-    $id = \Drupal::config('google_analytics.settings')->get('account');
+    $id = \Drupal::service('ga_push.google_analytics_id')->getAnalyticsId();
     if (!empty($id)) {
       $script = "var _gaq = _gaq || [];\n";
 
@@ -141,6 +141,5 @@ function ga_push_method_ga_js_push() {
 
     }
   }
-
   return $script;
 }

@@ -161,11 +161,11 @@ function ga_push_method_php_utmp_construct_social_request_data(array $push) {
  * @see https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide
  */
 function ga_push_method_utmp_php_request(array $data = [], array $options = [], $method = 'POST') {
-  $ga_config = \Drupal::config('google_analytics.settings');
+  $id = \Drupal::service('ga_push.google_analytics_id')->getAnalyticsId();
 
   $data['v'] = 1;
   // Options variables:
-  $data['tid'] = !empty($options['tid']) ? $options['tid'] : $ga_config->get('account');
+  $data['tid'] = !empty($options['tid']) ? $options['tid'] : $id;
   $data['cid'] = !empty($options['cid']) ? $options['cid'] : ga_push_method_php_utmp_get_uuid();
 
   // Optional values:

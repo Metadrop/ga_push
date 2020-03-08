@@ -1,0 +1,4 @@
+services:
+  ga_push.google_analytics_id:
+    class: Drupal\ga_push\GaIdService
+    arguments: ['@config.factory', '@module_handler']

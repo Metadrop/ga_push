@@ -26,9 +26,9 @@ function ga_push_method_analytics_js_push() {
   $session_key = 'ga_push_' . GA_PUSH_METHOD_ANALYTICS_JS;
   $script = NULL;
   if (isset($_SESSION[$session_key])) {
-    $ga_config = \Drupal::config('google_analytics.settings');
+    $id = \Drupal::service('ga_push.google_analytics_id')->getAnalyticsId();
 
-    if (!empty($ga_config->get('account'))) {
+    if (!empty($id)) {
       $script = "var ga = ga || [];\n";
 
       // Process each push data that needs to be sent to Google Analytics.

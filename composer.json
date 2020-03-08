@@ -5,8 +5,7 @@
     "homepage": "http://drupal.org/project/ga_push",
     "license": "GPL-2.0+",
     "require": {
-        "drupal/libraries": "~3",
-        "drupal/google_analytics": "^2.2"
+        "drupal/libraries": "~3"
     },
     "authors": [
       {
