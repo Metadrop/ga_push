@@ -43,6 +43,12 @@ class GAPushSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('default_method'),
     ];
 
+    $form['ga_push_debug'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Debug mode'),
+      '#description' => $this->t('Active the debug mode: log GA push requests.'),
+      '#default_value' => $config->get('debug'),
+    ];
     return parent::buildForm($form, $form_state);
   }
 
@@ -53,6 +59,7 @@ class GAPushSettingsForm extends ConfigFormBase {
     $this->config('ga_push.settings')
       ->set('google_analytics_id', $form_state->getValue('google_analytics_id'))
       ->set('default_method', $form_state->getValue('ga_push_default_method'))
+      ->set('debug', $form_state->getValue('ga_push_debug'))
       ->save();
 
     parent::submitForm($form, $form_state);

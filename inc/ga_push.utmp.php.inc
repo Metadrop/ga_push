@@ -8,6 +8,7 @@
  */
 
 use Drupal\Component\Utility\UrlHelper;
+use Psr\Http\Message\ResponseInterface;
 
 // Google UTMP Endpoint URL.
 define('GA_PUSH_METHOD_UTMP_HOST_ENDPOINT', 'ssl.google-analytics.com/collect');
@@ -200,6 +201,20 @@ function ga_push_method_utmp_php_request(array $data = [], array $options = [], 
   // Prevent browser cached data.
   $data += ['z' => mt_rand()];
 
+  $debug = \Drupal::config('ga_push.settings')->get('debug');
+  if ($debug) {
+
+    $httpr_options = [
+      'method' => $method,
+      'data' => UrlHelper::buildQuery($data),
+    ];
+
+    \Drupal::logger('ga_push')->debug('GA PUSH UTMP @type request with: @data', [
+      '@type' => $data['t'],
+      '@data' => print_r($httpr_options, TRUE),
+    ]);
+  }
+
   try {
     switch ($method) {
       case 'POST':
@@ -212,6 +227,15 @@ function ga_push_method_utmp_php_request(array $data = [], array $options = [], 
         $response = \Drupal::httpClient()
           ->get($url . '?' . UrlHelper::buildQuery($data));
         break;
+    }
+    if ($debug) {
+
+      $response_data = $response instanceof ResponseInterface ? 'Status_code: ' . $response->getStatusCode() . ' / Headers: ' . print_r($response->getHeaders(), TRUE) : '';
+
+      \Drupal::logger('ga_push')->debug('GA PUSH UTMP @type response with: @data', [
+        '@type' => $data['t'],
+        '@data' => print_r($response_data, TRUE),
+      ]);
     }
   }
   catch (RequestException $exception) {

@@ -6,3 +6,6 @@ ga_push.settings:
     default_method:
       type: string
       label: 'Default method'
+    debug:
+      type: boolean
+      label: 'Debug mode'
