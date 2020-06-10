@@ -667,7 +667,7 @@ function ga_push_ga_push_method() {
 
   $method[GA_PUSH_METHOD_ANALYTICS_JS] = [
     'name' => 'Analytics.js (js)',
-    'description' => Link::fromTextAndUrl('Analytics.js', Url::fromUri('https://developers.google.com/analytics/devguides/collection/analyticsjs/')),
+    'description' => Link::fromTextAndUrl('Analytics.js', Url::fromUri('https://developers.google.com/analytics/devguides/collection/analyticsjs/'))->toString(),
     'machine_name' => GA_PUSH_METHOD_ANALYTICS_JS,
     'callback' => 'ga_push_method_analytics_js',
     'file' => $module_path . '/inc/ga_push.analytics_js.inc',
@@ -685,7 +685,7 @@ function ga_push_ga_push_method() {
 
   $method[GA_PUSH_METHOD_UTMP_PHP] = [
     'name' => 'Measurement Protocol (php)',
-    'description' => Link::fromTextAndUrl('Measurement Protocol', Url::fromUri('https://developers.google.com/analytics/devguides/collection/protocol/v1/')),
+    'description' => Link::fromTextAndUrl('Measurement Protocol', Url::fromUri('https://developers.google.com/analytics/devguides/collection/protocol/v1/'))->toString(),
     'machine_name' => GA_PUSH_METHOD_UTMP_PHP,
     'callback' => 'ga_push_method_utmp_php',
     'file' => $module_path . '/inc/ga_push.utmp.php.inc',
@@ -703,7 +703,8 @@ function ga_push_ga_push_method() {
 
   $method[GA_PUSH_METHOD_GA_JS] = [
     'name' => 'Ga.js (js)',
-    'description' => '@deprecated ' . Link::fromTextAndUrl('ga.js', Url::fromUri('https://developers.google.com/analytics/devguides/collection/gajs/')),
+    'description' => '@deprecated ' . Link::fromTextAndUrl('ga.js', Url::fromUri('https://developers.google.com/analytics/devguides/collection/gajs/'))->toString(),
+    // 'description' =>  Link::fromTextAndUrl('ga.js', Url::fromUri('https://developers.google.com/analytics/devguides/collection/gajs/')),
     'machine_name' => GA_PUSH_METHOD_GA_JS,
     'callback' => 'ga_push_method_ga_js',
     'file' => $module_path . '/inc/ga_push.ga_js.inc',
@@ -733,7 +734,7 @@ function ga_push_ga_push_method() {
 
   $method[GA_PUSH_METHOD_DATALAYER_JS] = [
     'name' => 'Datalayer.js (js)',
-    'description' => Link::fromTextAndUrl('Data Layer', Url::fromUri('https://developers.google.com/tag-manager/devguide')),
+    'description' => Link::fromTextAndUrl('Data Layer', Url::fromUri('https://developers.google.com/tag-manager/devguide'))->toString(),
     'machine_name' => GA_PUSH_METHOD_DATALAYER_JS,
     'callback' => 'ga_push_method_datalayer',
     'file' => $module_path . '/inc/ga_push.datalayer.inc',
