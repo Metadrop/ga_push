@@ -87,6 +87,7 @@ function ga_push_page_attachments(array &$attachments) {
   if (!empty($script)) {
     $attachments['#attached']['html_head'][] = [
       [
+        '#type' => 'html_tag',
         '#tag' => 'script',
         '#value' => $script,
         // It must load after GA Module.
