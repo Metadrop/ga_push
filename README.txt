@@ -12,7 +12,7 @@ UNIVERSAL ANALYTICS
 -------------------
 
 Requeriments:
-Google Analytics 7.x-2.x https://drupal.org/project/google_analytics
+Google Analytics
 
 - UTMP-JS:  It sends the data on client-side (next page load).
 - UTMP-PHP: It sends the data on server-side.
@@ -21,21 +21,10 @@ CLASSIC ANALYTICS
 -----------------
 
 Requeriments:
-Google Analytics 7.x-1.x https://drupal.org/project/google_analytics
+Google Analytics
 
 - JS: It sends the data on client-side (next page load).
-
-- PHP: It sends the data on server-side. One of these libraries are required:
-
-  - PHP-GA: Recomended library only for versión 5.3+
-    Requires PHP 5.3 as namespaces and closures are used.
-    Download from: https://github.com/thomasbachem/php-ga
-    Use the default libraries directory, usually "sites/all/libraries/",
-    naming the folder "php-ga" (sites/all/libraries/php-ga).
-
-    Example:
-      /sites/all/libraries/php-ga/src/autoload.php
-      /sites/all/libraries/php-ga/src/GoogleAnalytics
+- PHP: It sends the data on server-side.
 
 --------------------------------------------------------------------------------
  FEATURES:

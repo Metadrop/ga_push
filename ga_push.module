@@ -1,6 +1,5 @@
 <?php
 
-use Drupal\Core\Link;
 /**
  * @file
  * Drupal Module: GA Push.
@@ -9,7 +8,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\libraries\ExternalLibrary\Exception\LibraryDefinitionNotFoundException;
+use Drupal\Core\Link;
 
 // Methods:
 // Classic GA.
@@ -87,7 +86,6 @@ function ga_push_page_attachments(array &$attachments) {
   if (!empty($script)) {
     $attachments['#attached']['html_head'][] = [
       [
-        '#type' => 'html_tag',
         '#tag' => 'script',
         '#value' => $script,
         // It must load after GA Module.
@@ -755,19 +753,8 @@ function ga_push_ga_push_method() {
  * Checks if php_ga library is available.
  */
 function ga_push_method_php_ga_available() {
-  /** @var $libraries \Drupal\libraries\ExternalLibrary\LibraryManager */
-  $libraries = \Drupal::service('libraries.manager');
-  $exists = FALSE;
-  try {
-    $library = $libraries->getLibrary('php-ga');
-    if (!empty($library)) {
-      $exists = TRUE;
-    }
-  } catch (LibraryDefinitionNotFoundException $e) {
-    $exists = FALSE;
-  }
-
-  return $exists;
+  $libraries = libraries_get_libraries();
+  return strnatcmp(phpversion(), '5.3.0') >= 0 && isset($libraries['php-ga']);
 }
 
 /**

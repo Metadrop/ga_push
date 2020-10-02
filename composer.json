@@ -5,17 +5,13 @@
     "homepage": "http://drupal.org/project/ga_push",
     "license": "GPL-2.0+",
     "require": {
-        "drupal/libraries": "dev-fb-drupal8-9",
-        "drupal/core": "^8.8.0 || ^9.0"
+      "drupal/core": "^8.8.0 || ^9.0",
+      "thomasbachem/php-ga": "dev-fb-composer"
     },
     "authors": [
       {
-        "name": "GeduR",
-        "homepage": "https://www.drupal.org/u/gedur"
-      },
-      {
-        "name": "Ricardo Sanz Ante",
-        "homepage": "https://www.drupal.org/u/tunic"
+        "name": "Metadrop",
+        "homepage": "https://github.com/Metadrop"
       },
       {
         "name": "See other contributors",
