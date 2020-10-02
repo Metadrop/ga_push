@@ -7,7 +7,7 @@
     "repositories": [
       {
         "type": "vcs",
-        "url": "https://github.com/Metadrop/ga_push.git"
+        "url": "git@github.com:Metadrop/php-ga.git"
       }
     ],
     "require": {
