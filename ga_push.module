@@ -1,6 +1,5 @@
 <?php
 
-use Drupal\Core\Link;
 /**
  * @file
  * Drupal Module: GA Push.
@@ -9,6 +8,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 
 // Methods:
 // Classic GA.
@@ -753,8 +753,14 @@ function ga_push_ga_push_method() {
  * Checks if php_ga library is available.
  */
 function ga_push_method_php_ga_available() {
-  $libraries = libraries_get_libraries();
-  return strnatcmp(phpversion(), '5.3.0') >= 0 && isset($libraries['php-ga']);
+  if (class_exists('UnitedPrototype\GoogleAnalytics\Item')) {
+    $exists = TRUE;
+  }
+  else {
+    $exists = FALSE;
+  }
+
+  return $exists;
 }
 
 /**

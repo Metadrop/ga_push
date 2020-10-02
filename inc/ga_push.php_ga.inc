@@ -17,9 +17,6 @@ use UnitedPrototype\GoogleAnalytics\Tracker;
  */
 function ga_push_method_php_ga($push, $type, $options) {
 
-  $php_ga_path = libraries_get_path('php-ga');
-  include_once $php_ga_path . '/src/autoload.php';
-
   /*
    * use UnitedPrototype\GoogleAnalytics;
    * causes 500 Internal Server error, so need to use full namespace references.
